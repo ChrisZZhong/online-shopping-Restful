@@ -30,6 +30,9 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+//        if (request.getHeader("Authorization") == null) {
+//
+//        }
         Optional<AuthUserDetail> authUserDetailOptional = jwtProvider.resolveToken(request); // extract jwt from request, generate a userdetails object
 
         if (authUserDetailOptional.isPresent()){

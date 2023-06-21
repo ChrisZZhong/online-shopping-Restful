@@ -54,6 +54,7 @@ public class LoginController {
 
         //Returns the token as a response to the frontend/postman
         return LoginResponse.builder()
+                .status("200 OK")
                 .message("Welcome " + authUserDetail.getUsername())
                 .token(token)
                 .build();
