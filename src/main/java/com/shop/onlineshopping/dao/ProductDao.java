@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @Transactional
 public class ProductDao extends AbstractHibernateDao<Product> {
@@ -24,4 +26,7 @@ public class ProductDao extends AbstractHibernateDao<Product> {
         getCurrentSession().update(product);
     }
 
+    public List<Product> getAllProducts() {
+        return getAll();
+    }
 }

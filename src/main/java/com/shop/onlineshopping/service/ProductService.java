@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ProductService {
     private ProductDao productDao;
@@ -39,4 +41,11 @@ public class ProductService {
     }
 
 
+    public List<Product> getAllProducts() {
+        return productDao.getAllProducts();
+    }
+
+    public Product getProductById(Integer id) {
+        return productDao.getProductById(id);
+    }
 }
