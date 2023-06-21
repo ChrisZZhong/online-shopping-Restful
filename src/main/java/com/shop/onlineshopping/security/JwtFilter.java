@@ -26,7 +26,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().startsWith("/login")){ // if the request is for authentication, do not filter
+        if (request.getRequestURI().startsWith("/login") || request.getRequestURI().startsWith("/signup")){ // if the request is for authentication, do not filter
             filterChain.doFilter(request, response);
             return;
         }

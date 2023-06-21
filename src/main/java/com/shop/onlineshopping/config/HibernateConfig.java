@@ -1,5 +1,6 @@
 package com.shop.onlineshopping.config;
 
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,6 @@ public class HibernateConfig {
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("com.shop.onlineshopping.domain");
         sessionFactory.setHibernateProperties(hibernateProperties());
-
         return sessionFactory;
     }
 
