@@ -5,9 +5,7 @@ import com.shop.onlineshopping.dto.response.StatusResponse;
 import com.shop.onlineshopping.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ProductController {
@@ -22,18 +20,21 @@ public class ProductController {
     @PostMapping(value = "/products")
     @PreAuthorize("hasAuthority('admin')")
     public StatusResponse addProduct(@RequestBody ProductRequest productRequest) {
-//        try {
         productService.addProduct(productRequest);
         return StatusResponse.builder()
                 .status("200 OK")
                 .message("Product added successfully")
                 .build();
-//        } catch (Exception e) {
-//            return StatusResponse.builder()
-//                    .status("404")
-//                    .message(e.getMessage())
-//                    .build();
-//        }
+    }
+
+    @PatchMapping(value = "/products/{id}")
+    @PreAuthorize("hasAuthority('admin')")
+    public StatusResponse updateProduct(@RequestBody ProductRequest productRequest, @PathVariable Integer id) {
+        productService.updateProduct(productRequest, id);
+        return StatusResponse.builder()
+                .status("200 OK")
+                .message("Product updated successfully")
+                .build();
     }
 
 }
