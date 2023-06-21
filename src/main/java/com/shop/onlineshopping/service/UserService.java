@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -43,5 +44,14 @@ public class UserService {
 
     }
 
+    public Optional<User> getUserByUsername(String username) {
+        return getAllUsers().stream()
+                .filter(user -> user.getUsername().equals(username)).findFirst();
+    }
+
+    public Optional<User> getUserByEmail(String email) {
+        return getAllUsers().stream()
+                .filter(user -> user.getEmail().equals(email)).findFirst();
+    }
 
 }

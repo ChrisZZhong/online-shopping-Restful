@@ -1,5 +1,6 @@
 package com.shop.onlineshopping.controller;
 
+import com.shop.onlineshopping.domain.User;
 import com.shop.onlineshopping.dto.request.LoginRequest;
 import com.shop.onlineshopping.dto.request.SignUpRequest;
 import com.shop.onlineshopping.dto.response.LoginResponse;
@@ -16,6 +17,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 public class LoginController {
@@ -78,6 +81,15 @@ public class LoginController {
 
     @PostMapping("/signup")
     public LoginResponse signUp(@RequestBody SignUpRequest signUpRequest) {
+        // check username and email if already exists
+        if (userService.getUserByUsername(signUpRequest.getUsername()).isPresent() ||
+                userService.getUserByEmail(signUpRequest.getEmail()).isPresent()) {
+            return LoginResponse.builder()
+                    .status("409 Conflict")
+                    .message("Username or email already exists, please try again.")
+                    .build();
+        }
+        // signup
         userService.signUp(signUpRequest);
         Authentication authentication;
 
