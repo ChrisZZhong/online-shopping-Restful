@@ -35,7 +35,7 @@ public class Product {
     private Double retailPrice;
 
     @Column(name="wholesale_price")
-    private Double wholeSalePrice;
+    private Double wholesalePrice;
 
     @ManyToMany(mappedBy = "watchlist")
     @ToString.Exclude

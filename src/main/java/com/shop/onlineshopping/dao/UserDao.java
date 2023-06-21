@@ -23,13 +23,6 @@ public class UserDao extends AbstractHibernateDao<User> {
         setClazz(User.class);
     }
 
-    private SessionFactory sessionFactory;
-
-    @Autowired
-    public void setSessionFactory(LocalSessionFactoryBean sessionFactory) {
-        this.sessionFactory = sessionFactory.getObject();
-    }
-
     public List<User> getAllUsers() {
         return getAll();
     }
@@ -43,7 +36,7 @@ public class UserDao extends AbstractHibernateDao<User> {
     }
 
     public Integer getUserIdByUsername(String username) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<Integer> criteriaQuery = criteriaBuilder.createQuery(Integer.class);
         Root<User> root = criteriaQuery.from(User.class);

@@ -23,12 +23,9 @@ public class UserController {
     }
 
 
-
-
-
-//    @GetMapping("/users")
-//    @PreAuthorize("hasAuthority('admin')")
-//    public List<User> getAllUsers() {
-//        return userService.getAllUsers();
-//    }
+    @GetMapping("/users")
+    @PreAuthorize("hasAuthority('admin')")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
 }
