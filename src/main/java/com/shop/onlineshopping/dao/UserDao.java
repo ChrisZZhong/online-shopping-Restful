@@ -1,5 +1,6 @@
 package com.shop.onlineshopping.dao;
 
+import com.shop.onlineshopping.domain.Product;
 import com.shop.onlineshopping.domain.User;
 import com.shop.onlineshopping.dto.request.SignUpRequest;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
@@ -43,5 +45,15 @@ public class UserDao extends AbstractHibernateDao<User> {
         criteriaQuery.select(root.get("userId"));
         criteriaQuery.where(criteriaBuilder.equal(root.get("username"), username));
         return session.createQuery(criteriaQuery).getSingleResult();
+    }
+
+    public List<Product> getWatchlistProducts(Integer userId) {
+        Session session = getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        criteriaQuery.select(root.get("watchlist"));
+        criteriaQuery.where(criteriaBuilder.equal(root.get("userId"), userId));
+        return session.createQuery(criteriaQuery).getResultList();
     }
 }

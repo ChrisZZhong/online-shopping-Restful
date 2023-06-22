@@ -53,6 +53,9 @@ public class ProductController {
         List<Product> products = new ArrayList<>();
         if (authUserDetail.hasAuthority("user")) {
             products = productService.getOnsaleProducts();
+            for (Product product : products) {
+                product.setWholesalePrice(null);
+            }
         } else if (authUserDetail.hasAuthority("admin")){
             products = productService.getAllProducts();
         }

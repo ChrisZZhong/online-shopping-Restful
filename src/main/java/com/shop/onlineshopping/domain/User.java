@@ -1,6 +1,6 @@
 package com.shop.onlineshopping.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import javax.persistence.*;
 import org.springframework.stereotype.Component;
@@ -17,6 +17,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "user")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
 
     @Id
@@ -37,14 +38,15 @@ public class User {
     private Integer role;
 
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<Permission> permissions;
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     @JoinTable(
             name = "watchlist",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    @ToString.Exclude // to avoid infinite loop
-    @JsonIgnore
     private List<Product> watchlist;
+
 }

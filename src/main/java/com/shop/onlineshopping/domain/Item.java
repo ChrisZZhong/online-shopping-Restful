@@ -1,6 +1,7 @@
 package com.shop.onlineshopping.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.stereotype.Component;
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "order_item")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package com.shop.onlineshopping.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import javax.persistence.*;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 @ToString
 @Entity
 @Table(name = "permission")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

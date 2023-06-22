@@ -2,6 +2,7 @@ package com.shop.onlineshopping.service;
 
 import com.shop.onlineshopping.dao.UserDao;
 import com.shop.onlineshopping.domain.Permission;
+import com.shop.onlineshopping.domain.Product;
 import com.shop.onlineshopping.domain.User;
 import com.shop.onlineshopping.dto.request.SignUpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,10 @@ public class UserService {
     public Optional<User> getUserByEmail(String email) {
         return getAllUsers().stream()
                 .filter(user -> user.getEmail().equals(email)).findFirst();
+    }
+
+    public List<Product> getWatchlistProducts(Integer userId) {
+        return userDao.getWatchlistProducts(userId);
     }
 
 }

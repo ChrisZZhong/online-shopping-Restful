@@ -29,4 +29,5 @@ public class ProductDao extends AbstractHibernateDao<Product> {
     public List<Product> getAllProducts() {
         return getAll();
     }
+
 }
