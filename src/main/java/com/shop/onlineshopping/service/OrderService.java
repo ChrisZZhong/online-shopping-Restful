@@ -3,6 +3,7 @@ package com.shop.onlineshopping.service;
 import com.shop.onlineshopping.dao.ItemDao;
 import com.shop.onlineshopping.dao.OrderDao;
 import com.shop.onlineshopping.domain.Item;
+import com.shop.onlineshopping.domain.Order;
 import com.shop.onlineshopping.domain.Product;
 import com.shop.onlineshopping.dto.response.StatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,6 @@ public class OrderService {
         // save items to order
         itemDao.addItemsToOrder(items);
         return true;
-
     }
     public boolean checkQuantity(List<Item> items) {
         for (Item item : items) {
@@ -67,5 +67,21 @@ public class OrderService {
             }
         }
         return true;
+    }
+
+    public List<Order> getOrdersByUserId(Integer userId) {
+        return orderDao.getOrdersByUserId(userId);
+    }
+
+    public List<Order> getAllOrders() {
+        return orderDao.getAllOrders();
+    }
+
+    public List<Item> getItemsByOrderId(Integer orderId) {
+        return itemDao.getItemsByOrderId(orderId);
+    }
+
+    public Order getOrdersByOrderId(Integer id) {
+        return orderDao.getOrdersByOrderId(id);
     }
 }

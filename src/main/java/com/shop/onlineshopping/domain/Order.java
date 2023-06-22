@@ -1,5 +1,6 @@
 package com.shop.onlineshopping.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class Order {
     @Column(name="order_status")
     private String orderStatus;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Item> items;
 }

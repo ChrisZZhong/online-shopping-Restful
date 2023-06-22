@@ -43,4 +43,9 @@ public class Product {
     @ToString.Exclude
     @JsonIgnore
     private List<User> watchlistUsers;
+
+    @OneToMany(mappedBy = "product")
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Item> items;
 }

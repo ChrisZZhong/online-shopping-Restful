@@ -40,5 +40,11 @@ public class Item {
     @ManyToOne
     @JoinColumn(name="order_id", insertable = false, updatable = false)
     @JsonIgnore
+    @ToString.Exclude
     private Order order;
+
+    @ManyToOne
+    @JoinColumn(name="product_id", insertable = false, updatable = false)
+    @ToString.Exclude
+    private Product product;
 }
