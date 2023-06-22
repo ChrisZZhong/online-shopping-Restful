@@ -38,7 +38,7 @@ public class ProductController {
     @PatchMapping(value = "/products/{id}")
     @PreAuthorize("hasAuthority('admin')")
     public StatusResponse updateProduct(@RequestBody ProductRequest productRequest, @PathVariable Integer id) {
-        productService.updateProduct(productRequest, id);
+        productService.updateProductById(productRequest, id);
         return StatusResponse.builder()
                 .status("200 OK")
                 .message("Product updated successfully")

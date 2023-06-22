@@ -31,7 +31,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateProduct(ProductRequest productRequest, int id) {
+    public void updateProductById(ProductRequest productRequest, int id) {
         Product product = productDao.getProductById(id);
         product.setName(productRequest.getName());
         product.setDescription(productRequest.getDescription());
@@ -54,4 +54,7 @@ public class ProductService {
         return productDao.getProductById(id);
     }
 
+    public void updateProduct(Product product) {
+        productDao.updateProduct(product);
+    }
 }
