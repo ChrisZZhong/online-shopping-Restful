@@ -56,4 +56,12 @@ public class UserDao extends AbstractHibernateDao<User> {
         criteriaQuery.where(criteriaBuilder.equal(root.get("userId"), userId));
         return session.createQuery(criteriaQuery).getResultList();
     }
+
+    public User getUserById(Integer userId) {
+        return findById(userId);
+    }
+
+    public void updateUser(User user) {
+        getCurrentSession().saveOrUpdate(user);
+    }
 }

@@ -53,6 +53,7 @@ public class ProductController {
         List<Product> products = new ArrayList<>();
         if (authUserDetail.hasAuthority("user")) {
             products = productService.getOnsaleProducts();
+            products.removeIf(product -> product.getQuantity() == 0);
             for (Product product : products) {
                 product.setWholesalePrice(null);
             }

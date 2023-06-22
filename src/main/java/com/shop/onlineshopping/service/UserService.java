@@ -59,4 +59,11 @@ public class UserService {
         return userDao.getWatchlistProducts(userId);
     }
 
+    public User getUserById(Integer userId) {
+        return userDao.getUserById(userId);
+    }
+
+    public void updateUser(User user) {
+        userDao.updateUser(user);
+    }
 }
