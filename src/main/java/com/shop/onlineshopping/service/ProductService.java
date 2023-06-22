@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -43,6 +44,10 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return productDao.getAllProducts();
+    }
+
+    public List<Product> getOnsaleProducts() {
+        return productDao.getAllProducts().stream().filter(product -> product.getQuantity() > 0).collect(Collectors.toList());
     }
 
     public Product getProductById(Integer id) {

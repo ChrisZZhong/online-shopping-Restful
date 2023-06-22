@@ -14,5 +14,5 @@ import java.util.List;
 public class ProductsResponse {
     private String status;
     private String message;
-    private List<Product> product;
+    private List<Product> products;
 }

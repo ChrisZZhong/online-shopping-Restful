@@ -52,4 +52,13 @@ public class AuthUserDetail implements UserDetails {
     public boolean isEnabled() {
         return this.enabled;
     }
+
+    public boolean hasAuthority(String authority) {
+        for (GrantedAuthority grantedAuthority : authorities) {
+            if (grantedAuthority.getAuthority().equals(authority)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
