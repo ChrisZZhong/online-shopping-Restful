@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @NoArgsConstructor
 @ToString
-public class PopularProducts {
+public class PopularProduct {
     private Integer productId;
     private String productName;
     private String description;

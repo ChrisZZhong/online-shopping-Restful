@@ -2,9 +2,7 @@ package com.shop.onlineshopping.dao;
 
 import com.shop.onlineshopping.domain.Item;
 import com.shop.onlineshopping.domain.Order;
-import com.shop.onlineshopping.domain.Product;
-import com.shop.onlineshopping.domain.User;
-import com.shop.onlineshopping.dto.PopularProducts;
+import com.shop.onlineshopping.dto.PopularProduct;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +54,7 @@ public class OrderDao extends AbstractHibernateDao<Order>{
         getCurrentSession().update(order);
     }
 
-    public List<PopularProducts> getTopPopularProducts(Integer limit) {
+    public List<PopularProduct> getTopPopularProducts(Integer limit) {
         /*
         select order_item.product_id, product.name, product.description, sum(order_item.quantity) as sales
         from order_item, orders, product
@@ -69,7 +67,7 @@ public class OrderDao extends AbstractHibernateDao<Order>{
          */
         Session session = getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<PopularProducts> criteriaQuery = criteriaBuilder.createQuery(PopularProducts.class);
+        CriteriaQuery<PopularProduct> criteriaQuery = criteriaBuilder.createQuery(PopularProduct.class);
         Root<Item> root = criteriaQuery.from(Item.class);
         root.join("order", JoinType.INNER);
         root.join("product", JoinType.INNER);

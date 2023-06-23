@@ -1,6 +1,6 @@
 package com.shop.onlineshopping.dto.response;
 
-import com.shop.onlineshopping.dto.PopularProducts;
+import com.shop.onlineshopping.dto.PopularProduct;
 import lombok.*;
 
 import java.util.List;
@@ -13,5 +13,5 @@ import java.util.List;
 public class PopularProductsResponse {
     private String status;
     private String message;
-    private List<PopularProducts> popularProducts;
+    private List<PopularProduct> popularProducts;
 }

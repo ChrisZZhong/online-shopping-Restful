@@ -3,7 +3,7 @@ package com.shop.onlineshopping.controller;
 import com.shop.onlineshopping.domain.Item;
 import com.shop.onlineshopping.domain.Order;
 import com.shop.onlineshopping.domain.User;
-import com.shop.onlineshopping.dto.PopularProducts;
+import com.shop.onlineshopping.dto.PopularProduct;
 import com.shop.onlineshopping.dto.request.OrderRequest;
 import com.shop.onlineshopping.dto.response.*;
 import com.shop.onlineshopping.security.AuthUserDetail;
@@ -16,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -143,7 +142,7 @@ public class OrderController {
     @GetMapping("/products/popular/{Id}")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<PopularProductsResponse> getTop3PopularProducts(@PathVariable Integer Id) {
-        List<PopularProducts> popularProducts = orderService.getTopPopularProducts(Id);
+        List<PopularProduct> popularProducts = orderService.getTopPopularProducts(Id);
         return ResponseEntity.ok(PopularProductsResponse.builder()
                 .status("success")
                 .message("Top 3 popular products retrieved successfully")
