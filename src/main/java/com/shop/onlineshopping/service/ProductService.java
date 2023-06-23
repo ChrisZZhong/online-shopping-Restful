@@ -59,6 +59,7 @@ public class ProductService {
         productDao.updateProduct(product);
     }
 
+    // pass by 0 means no limit
     public List<PopularProduct> getTopPopularProducts(Integer limit) {
         List<PopularProduct> popularProducts = productDao.getTopPopularProducts(limit);
         return popularProducts;

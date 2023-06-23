@@ -62,6 +62,7 @@ public class ProductDao extends AbstractHibernateDao<Product> {
         criteriaQuery.where(criteriaBuilder.equal(root.get("order").get("orderStatus"), "Completed"));
         criteriaQuery.groupBy(root.get("product").get("productId"));
         criteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.sum(root.get("quantity"))));
+        if (limit == 0) return session.createQuery(criteriaQuery).getResultList();
         return session.createQuery(criteriaQuery).setMaxResults(limit).getResultList();
     }
 }

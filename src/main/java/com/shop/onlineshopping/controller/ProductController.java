@@ -89,7 +89,7 @@ public class ProductController {
     // below is derived attributes for summary table
     @GetMapping("/products/popular/{Id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<PopularProductsResponse> getTop3PopularProducts(@PathVariable Integer Id) {
+    public ResponseEntity<PopularProductsResponse> getTopPopularProducts(@PathVariable Integer Id) {
         List<PopularProduct> popularProducts = productService.getTopPopularProducts(Id);
         return ResponseEntity.ok(PopularProductsResponse.builder()
                 .status("success")
@@ -97,5 +97,7 @@ public class ProductController {
                 .popularProducts(popularProducts)
                 .build());
     }
+
+
 
 }
