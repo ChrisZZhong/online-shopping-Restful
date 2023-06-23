@@ -3,10 +3,9 @@ package com.shop.onlineshopping.controller;
 import com.shop.onlineshopping.domain.Item;
 import com.shop.onlineshopping.domain.Order;
 import com.shop.onlineshopping.domain.User;
+import com.shop.onlineshopping.dto.PopularProducts;
 import com.shop.onlineshopping.dto.request.OrderRequest;
-import com.shop.onlineshopping.dto.response.OrderResponse;
-import com.shop.onlineshopping.dto.response.OrdersResponse;
-import com.shop.onlineshopping.dto.response.StatusResponse;
+import com.shop.onlineshopping.dto.response.*;
 import com.shop.onlineshopping.security.AuthUserDetail;
 import com.shop.onlineshopping.service.OrderService;
 import com.shop.onlineshopping.service.ProductService;
@@ -139,5 +138,18 @@ public class OrderController {
                     .build());
         }
     }
+
+    // below is derived attributes for summary table
+    @GetMapping("/products/popular/{Id}")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<PopularProductsResponse> getTop3PopularProducts(@PathVariable Integer Id) {
+        List<PopularProducts> popularProducts = orderService.getTopPopularProducts(Id);
+        return ResponseEntity.ok(PopularProductsResponse.builder()
+                .status("success")
+                .message("Top 3 popular products retrieved successfully")
+                .popularProducts(popularProducts)
+                .build());
+    }
+
 
 }

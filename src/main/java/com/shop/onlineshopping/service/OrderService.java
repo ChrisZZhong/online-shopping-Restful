@@ -5,6 +5,7 @@ import com.shop.onlineshopping.dao.OrderDao;
 import com.shop.onlineshopping.domain.Item;
 import com.shop.onlineshopping.domain.Order;
 import com.shop.onlineshopping.domain.Product;
+import com.shop.onlineshopping.dto.PopularProducts;
 import com.shop.onlineshopping.dto.response.StatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -121,5 +122,10 @@ public class OrderService {
         } else {
             return false;
         }
+    }
+
+    public List<PopularProducts> getTopPopularProducts(Integer limit) {
+        List<PopularProducts> popularProducts = orderDao.getTopPopularProducts(limit);
+        return popularProducts;
     }
 }
