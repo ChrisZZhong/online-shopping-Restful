@@ -2,6 +2,7 @@ package com.shop.onlineshopping.service;
 
 import com.shop.onlineshopping.dao.ProductDao;
 import com.shop.onlineshopping.domain.Product;
+import com.shop.onlineshopping.dto.PopularProduct;
 import com.shop.onlineshopping.dto.request.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,10 @@ public class ProductService {
 
     public void updateProduct(Product product) {
         productDao.updateProduct(product);
+    }
+
+    public List<PopularProduct> getTopPopularProducts(Integer limit) {
+        List<PopularProduct> popularProducts = productDao.getTopPopularProducts(limit);
+        return popularProducts;
     }
 }

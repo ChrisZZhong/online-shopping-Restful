@@ -122,8 +122,4 @@ public class OrderService {
         }
     }
 
-    public List<PopularProduct> getTopPopularProducts(Integer limit) {
-        List<PopularProduct> popularProducts = orderDao.getTopPopularProducts(limit);
-        return popularProducts;
-    }
 }

@@ -138,17 +138,7 @@ public class OrderController {
         }
     }
 
-    // below is derived attributes for summary table
-    @GetMapping("/products/popular/{Id}")
-    @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<PopularProductsResponse> getTop3PopularProducts(@PathVariable Integer Id) {
-        List<PopularProduct> popularProducts = orderService.getTopPopularProducts(Id);
-        return ResponseEntity.ok(PopularProductsResponse.builder()
-                .status("success")
-                .message("Top 3 popular products retrieved successfully")
-                .popularProducts(popularProducts)
-                .build());
-    }
+
 
 
 }

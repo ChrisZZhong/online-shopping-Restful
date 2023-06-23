@@ -1,13 +1,16 @@
 package com.shop.onlineshopping.controller;
 
 import com.shop.onlineshopping.domain.Product;
+import com.shop.onlineshopping.dto.PopularProduct;
 import com.shop.onlineshopping.dto.request.ProductRequest;
+import com.shop.onlineshopping.dto.response.PopularProductsResponse;
 import com.shop.onlineshopping.dto.response.ProductResponse;
 import com.shop.onlineshopping.dto.response.ProductsResponse;
 import com.shop.onlineshopping.dto.response.StatusResponse;
 import com.shop.onlineshopping.security.AuthUserDetail;
 import com.shop.onlineshopping.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -81,6 +84,18 @@ public class ProductController {
                 .message("Product with id " + id)
                 .product(product)
                 .build();
+    }
+
+    // below is derived attributes for summary table
+    @GetMapping("/products/popular/{Id}")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<PopularProductsResponse> getTop3PopularProducts(@PathVariable Integer Id) {
+        List<PopularProduct> popularProducts = productService.getTopPopularProducts(Id);
+        return ResponseEntity.ok(PopularProductsResponse.builder()
+                .status("success")
+                .message("Top 3 popular products retrieved successfully")
+                .popularProducts(popularProducts)
+                .build());
     }
 
 }
