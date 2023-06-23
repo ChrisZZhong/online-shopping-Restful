@@ -12,6 +12,7 @@ import com.shop.onlineshopping.service.OrderService;
 import com.shop.onlineshopping.service.ProductService;
 import com.shop.onlineshopping.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,6 @@ public class OrderController {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
@@ -83,26 +83,61 @@ public class OrderController {
     @GetMapping("/orders/{Id}")
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public OrderResponse getOrderByOrderId(@AuthenticationPrincipal AuthUserDetail authUserDetail, @PathVariable Integer Id) {
-        Order order = orderService.getOrdersByOrderId(Id);
-        List<Item> items = orderService.getItemsByOrderId(order.getOrderId());
+        Order order = orderService.loadOrder(orderService.getOrdersByOrderId(Id));
         if (authUserDetail.hasAuthority("user")) {
             User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
             // TODO check order belongs to user?
-            for (Item i : items) {
+            for (Item i : order.getItems()) {
                 i.setProduct(null);
             }
-        } else {
-            for (Item i : items) {
-                i.setProduct(productService.getProductById(i.getProductId()));
-            }
         }
-
-        order.setItems(items);
         return OrderResponse.builder()
                 .status("success")
                 .message("Orders retrieved successfully")
                 .order(order)
                 .build();
+    }
+
+    @PatchMapping("/orders/{Id}/cancel")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    public ResponseEntity<StatusResponse> cancelOrder(@AuthenticationPrincipal AuthUserDetail authUserDetail, @PathVariable Integer Id) {
+        if (authUserDetail.hasAuthority("user")) {
+            User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
+            // TODO check order belongs to user?
+        }
+        Order order = orderService.getOrdersByOrderId(Id);
+        if (orderService.cancelOrder(order)) {
+            return ResponseEntity.ok(StatusResponse.builder()
+                    .status("success")
+                    .message("Order cancelled successfully")
+                    .build());
+        } else {
+            return ResponseEntity.ok(StatusResponse.builder()
+                    .status("failed")
+                    .message("Order cancellation failed")
+                    .build());
+        }
+    }
+
+    @PatchMapping("/orders/{Id}/complete")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    public ResponseEntity<StatusResponse> completeOrder(@AuthenticationPrincipal AuthUserDetail authUserDetail, @PathVariable Integer Id) {
+        if (authUserDetail.hasAuthority("user")) {
+            User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
+            // TODO check order belongs to user?
+        }
+        Order order = orderService.getOrdersByOrderId(Id);
+        if (orderService.completeOrder(order)) {
+            return ResponseEntity.ok(StatusResponse.builder()
+                    .status("success")
+                    .message("Order completed successfully")
+                    .build());
+        } else {
+            return ResponseEntity.ok(StatusResponse.builder()
+                    .status("failed")
+                    .message("Order completion failed")
+                    .build());
+        }
     }
 
 }

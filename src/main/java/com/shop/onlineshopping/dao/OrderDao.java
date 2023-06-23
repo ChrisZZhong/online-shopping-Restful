@@ -46,4 +46,8 @@ public class OrderDao extends AbstractHibernateDao<Order>{
     public Order getOrdersByOrderId(Integer id) {
         return findById(id);
     }
+
+    public void updateOrder(Order order) {
+        getCurrentSession().update(order);
+    }
 }
