@@ -64,22 +64,18 @@ public class ProductService {
 
     // pass by 0 means no limit
     public List<PopularProduct> getTopPopularProducts(Integer limit) {
-        List<PopularProduct> popularProducts = productDao.getTopPopularProducts(limit);
-        return popularProducts;
+        return productDao.getTopPopularProducts(limit);
     }
 
     public List<ProfitProduct> getTopProfitProducts(Integer limit) {
-        List<ProfitProduct> profitProducts = productDao.getTopProfitProducts(limit);
-        return profitProducts;
+        return productDao.getTopProfitProducts(limit);
     }
 
     public List<FrequentProduct> getTopFrequentProductsByUserId(Integer limit, Integer userId) {
-        List<FrequentProduct> frequentProducts = productDao.getTopFrequentProductsByUserId(limit, userId);
-        return frequentProducts;
+        return productDao.getTopFrequentProductsByUserId(limit, userId);
     }
 
     public List<RecentProduct> getTopRecentProductsByUserId(Integer limit, Integer userId) {
-        List<RecentProduct> recentProducts = productDao.getTopRecentProductsByUserId(limit, userId);
-        return recentProducts;
+        return productDao.getTopRecentProductsByUserId(limit, userId);
     }
 }
