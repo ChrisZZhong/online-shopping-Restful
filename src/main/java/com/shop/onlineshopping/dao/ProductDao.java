@@ -5,6 +5,7 @@ import com.shop.onlineshopping.domain.Product;
 import com.shop.onlineshopping.dto.response.ProductRespons.domain.FrequentProduct;
 import com.shop.onlineshopping.dto.response.ProductRespons.domain.PopularProduct;
 import com.shop.onlineshopping.dto.response.ProductRespons.domain.ProfitProduct;
+import com.shop.onlineshopping.dto.response.ProductRespons.domain.RecentProduct;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -136,6 +137,37 @@ public class ProductDao extends AbstractHibernateDao<Product> {
         criteriaQuery.groupBy(root.get("product").get("productId"), root.get("product").get("name"), root.get("product").get("description"));
 
         criteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.sum(root.get("quantity"))));
+        if (limit == 0) return session.createQuery(criteriaQuery).getResultList();
+        return session.createQuery(criteriaQuery).setMaxResults(limit).getResultList();
+    }
+
+    public List<RecentProduct> getTopRecentProductsByUserId(Integer limit, Integer userId) {
+        /*
+            select order_item.product_id, product.name, product.description, date_placed
+            from order_item join orders, product
+            where order_item.order_id = orders.order_id
+            and product.product_id = order_item.product_id
+            and orders.order_status = "Completed"
+            and user_id = 2
+            order by date_placed desc;
+         */
+        Session session = getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<RecentProduct> criteriaQuery = criteriaBuilder.createQuery(RecentProduct.class);
+        Root<Item> root = criteriaQuery.from(Item.class);
+        root.join("order", JoinType.INNER);
+        root.join("product", JoinType.INNER);
+        criteriaQuery.multiselect(
+                root.get("product").get("productId"),
+                root.get("product").get("name"),
+                root.get("product").get("description"),
+                root.get("order").get("datePlaced").alias("datePurchased")
+        );
+
+        Predicate predicate1 = criteriaBuilder.equal(root.get("order").get("orderStatus"), "Completed");
+        Predicate predicate2 = criteriaBuilder.equal(root.get("order").get("userId"), userId);
+        criteriaQuery.where(criteriaBuilder.and(predicate1, predicate2));
+        criteriaQuery.orderBy(criteriaBuilder.desc(root.get("order").get("datePlaced")));
         if (limit == 0) return session.createQuery(criteriaQuery).getResultList();
         return session.createQuery(criteriaQuery).setMaxResults(limit).getResultList();
     }

@@ -1,6 +1,6 @@
 package com.shop.onlineshopping.dto.response.ProductRespons;
 
-import com.shop.onlineshopping.dto.response.ProductRespons.domain.ProfitProduct;
+import com.shop.onlineshopping.dto.response.ProductRespons.domain.RecentProduct;
 import lombok.*;
 
 import java.util.List;
@@ -10,8 +10,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfitProductResponse {
+public class RecentProductsResponse {
     private String status;
     private String message;
-    private List<ProfitProduct> profitProducts;
+    private List<RecentProduct> recentProducts;
 }

@@ -1,12 +1,12 @@
 package com.shop.onlineshopping.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Component
@@ -28,8 +28,9 @@ public class Order {
     @Column(name="user_id")
     private Integer userId;
 
+
     @Column(name="date_placed")
-    private Date datePlaced;
+    private Timestamp datePlaced;
 
     @Column(name="order_status")
     private String orderStatus;

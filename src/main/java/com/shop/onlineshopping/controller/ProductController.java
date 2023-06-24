@@ -8,6 +8,7 @@ import com.shop.onlineshopping.dto.response.ProductRespons.domain.PopularProduct
 import com.shop.onlineshopping.dto.response.ProductRespons.domain.ProfitProduct;
 import com.shop.onlineshopping.dto.request.ProductRequest;
 import com.shop.onlineshopping.dto.response.*;
+import com.shop.onlineshopping.dto.response.ProductRespons.domain.RecentProduct;
 import com.shop.onlineshopping.security.AuthUserDetail;
 import com.shop.onlineshopping.service.ProductService;
 import com.shop.onlineshopping.service.UserService;
@@ -105,9 +106,9 @@ public class ProductController {
 
     @GetMapping("/products/profit/{Id}")
     @PreAuthorize("hasAuthority('admin')")
-    public ResponseEntity<ProfitProductResponse> getTopProfitProducts(@PathVariable Integer Id) {
+    public ResponseEntity<ProfitProductsResponse> getTopProfitProducts(@PathVariable Integer Id) {
         List<ProfitProduct> popularProducts = productService.getTopProfitProducts(Id);
-        return ResponseEntity.ok(ProfitProductResponse.builder()
+        return ResponseEntity.ok(ProfitProductsResponse.builder()
                 .status("success")
                 .message("Top " + (Id == 0 ? "all" : Id) + " profitable products retrieved successfully")
                 .profitProducts(popularProducts)
@@ -126,7 +127,17 @@ public class ProductController {
                 .build());
     }
 
-
+    @GetMapping("/products/recent/{Id}")
+    @PreAuthorize("hasAuthority('user')")
+    public ResponseEntity<RecentProductsResponse> getTopRecentProducts(@PathVariable Integer Id, @AuthenticationPrincipal AuthUserDetail authUserDetail) {
+        User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
+        List<RecentProduct> popularProducts = productService.getTopRecentProductsByUserId(Id, user.getUserId());
+        return ResponseEntity.ok(RecentProductsResponse.builder()
+                .status("success")
+                .message("Top " + (Id == 0 ? "all" : Id) + " recent products retrieved successfully")
+                .recentProducts(popularProducts)
+                .build());
+    }
 
 
 }

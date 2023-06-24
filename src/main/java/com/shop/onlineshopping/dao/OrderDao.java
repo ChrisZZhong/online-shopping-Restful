@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class OrderDao extends AbstractHibernateDao<Order>{
         Order order = Order.builder()
                 .userId(userId)
                 .orderStatus("Processing")
-                .datePlaced(new Date(System.currentTimeMillis()))
+                .datePlaced(new Timestamp(System.currentTimeMillis()))
                 .build();
         add(order);
     }

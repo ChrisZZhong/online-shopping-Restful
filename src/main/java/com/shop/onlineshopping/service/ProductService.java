@@ -6,6 +6,7 @@ import com.shop.onlineshopping.dto.response.ProductRespons.domain.FrequentProduc
 import com.shop.onlineshopping.dto.response.ProductRespons.domain.PopularProduct;
 import com.shop.onlineshopping.dto.response.ProductRespons.domain.ProfitProduct;
 import com.shop.onlineshopping.dto.request.ProductRequest;
+import com.shop.onlineshopping.dto.response.ProductRespons.domain.RecentProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,5 +76,10 @@ public class ProductService {
     public List<FrequentProduct> getTopFrequentProductsByUserId(Integer limit, Integer userId) {
         List<FrequentProduct> frequentProducts = productDao.getTopFrequentProductsByUserId(limit, userId);
         return frequentProducts;
+    }
+
+    public List<RecentProduct> getTopRecentProductsByUserId(Integer limit, Integer userId) {
+        List<RecentProduct> recentProducts = productDao.getTopRecentProductsByUserId(limit, userId);
+        return recentProducts;
     }
 }
