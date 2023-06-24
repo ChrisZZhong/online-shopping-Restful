@@ -2,11 +2,9 @@ package com.shop.onlineshopping.controller;
 
 import com.shop.onlineshopping.domain.Product;
 import com.shop.onlineshopping.dto.PopularProduct;
+import com.shop.onlineshopping.dto.ProfitProduct;
 import com.shop.onlineshopping.dto.request.ProductRequest;
-import com.shop.onlineshopping.dto.response.PopularProductsResponse;
-import com.shop.onlineshopping.dto.response.ProductResponse;
-import com.shop.onlineshopping.dto.response.ProductsResponse;
-import com.shop.onlineshopping.dto.response.StatusResponse;
+import com.shop.onlineshopping.dto.response.*;
 import com.shop.onlineshopping.security.AuthUserDetail;
 import com.shop.onlineshopping.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,8 +91,19 @@ public class ProductController {
         List<PopularProduct> popularProducts = productService.getTopPopularProducts(Id);
         return ResponseEntity.ok(PopularProductsResponse.builder()
                 .status("success")
-                .message("Top 3 popular products retrieved successfully")
+                .message("Top " + Id + " popular products retrieved successfully")
                 .popularProducts(popularProducts)
+                .build());
+    }
+
+    @GetMapping("/products/profit/{Id}")
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<ProfitProductResponse> getTopProfitProducts(@PathVariable Integer Id) {
+        List<ProfitProduct> popularProducts = productService.getTopProfitProducts(Id);
+        return ResponseEntity.ok(ProfitProductResponse.builder()
+                .status("success")
+                .message("Top " + Id + " profitable products retrieved successfully")
+                .profitProducts(popularProducts)
                 .build());
     }
 

@@ -35,7 +35,7 @@ public class Item {
     private Double purchasedPrice;
 
     @Column(name="wholesale_price")
-    private Double WholesalePrice;
+    private Double wholesalePrice;
 
     @ManyToOne
     @JoinColumn(name="order_id", insertable = false, updatable = false)
