@@ -34,10 +34,8 @@ public class WatchlistService {
         User user = userService.getUserById(userId);
         Product product = productService.getProductById(id);
         List<Product> watchlist = getWatchlistProducts(userId);
-        for (Product p : watchlist) {
-            if (p.getProductId().equals(id)) {
-                return false;
-            }
+        if (watchlist.stream().anyMatch(p -> p.getProductId().equals(id))) {
+            return false;
         }
         watchlist.add(product);
         user.setWatchlist(watchlist);

@@ -9,6 +9,7 @@ import com.shop.onlineshopping.security.JwtProvider;
 import com.shop.onlineshopping.service.AuthenticationService;
 import com.shop.onlineshopping.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -54,7 +55,7 @@ public class LoginController {
 
     //User trying to log in with username and password
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request){
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws BadCredentialsException{
         Authentication authentication;
 
         //Try to authenticate the user using the username and password
@@ -63,7 +64,7 @@ public class LoginController {
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
         } catch (AuthenticationException e){
-            throw new BadCredentialsException("Provided credential is invalid.");
+            throw new BadCredentialsException("Incorrect credentials, please try again.");
         }
 
         //Successfully authenticated user will be stored in the authUserDetail object
@@ -72,11 +73,13 @@ public class LoginController {
         String token = jwtProvider.createToken(authUserDetail);
 
         //Returns the token as a response to the frontend/postman
-        return LoginResponse.builder()
-                .status("200 OK")
-                .message("Welcome " + authUserDetail.getUsername())
-                .token(token)
-                .build();
+        return ResponseEntity.ok(
+                LoginResponse.builder()
+                        .status("login successfully")
+                        .message("Welcome " + authUserDetail.getUsername())
+                        .token(token)
+                        .build()
+        );
     }
 
     @PostMapping("/signup")

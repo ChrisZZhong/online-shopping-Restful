@@ -78,10 +78,16 @@ public class ProductController {
 
     @GetMapping(value = "/products/{id}")
     @PreAuthorize("hasAnyAuthority('admin', 'user')")
-    // TODO separate admin and user
     public ProductResponse updateProduct(@PathVariable Integer id, @AuthenticationPrincipal AuthUserDetail authUserDetail) {
         Product product = productService.getProductById(id);
         if (authUserDetail.hasAuthority("user")) {
+            if (product.getQuantity() == 0) {
+                return ProductResponse.builder()
+                        .status("failed")
+                        .message("product out of stock")
+                        .product(null)
+                        .build();
+            }
             product.setQuantity(null);
             product.setWholesalePrice(null);
         }

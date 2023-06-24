@@ -79,9 +79,14 @@ public class OrderService {
         return itemDao.getItemsByOrderId(orderId);
     }
 
-    public Order getOrdersByOrderId(Integer id) {
-        return orderDao.getOrdersByOrderId(id);
+    public Order getOrderByOrderId(Integer id) {
+        return orderDao.getOrderByOrderId(id);
     }
+
+    public List<Order> getOrderByUserId(Integer userId) {
+        return orderDao.getOrderByUserId(userId);
+    }
+
 
     public Order loadOrder(Order order) {
         List<Item> items = getItemsByOrderId(order.getOrderId());
@@ -97,7 +102,7 @@ public class OrderService {
         if (order.getOrderStatus().equals("Processing")) {
             order.setOrderStatus("Cancelled");
             orderDao.updateOrder(order);
-            // TODO update product quantity
+            // update product quantity
             order = loadOrder(order);
             for (Item item : order.getItems()) {
                 Product product = item.getProduct();

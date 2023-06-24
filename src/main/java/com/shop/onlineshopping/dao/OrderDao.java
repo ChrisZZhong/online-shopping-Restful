@@ -40,12 +40,16 @@ public class OrderDao extends AbstractHibernateDao<Order>{
         return getAll();
     }
 
-    public Order getOrdersByOrderId(Integer id) {
+    public Order getOrderByOrderId(Integer id) {
         return findById(id);
     }
 
     public void updateOrder(Order order) {
         getCurrentSession().update(order);
+    }
+
+    public List<Order> getOrderByUserId(Integer userId) {
+        return getAll().stream().filter(order -> order.getUserId().equals(userId)).collect(Collectors.toList());
     }
 
 }

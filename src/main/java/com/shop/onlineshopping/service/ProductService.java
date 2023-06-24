@@ -23,6 +23,7 @@ public class ProductService {
         this.productDao = productDao;
     }
 
+    @Transactional
     public void addProduct(ProductRequest productRequest) {
         Product product = Product.builder()
                 .name(productRequest.getName())
