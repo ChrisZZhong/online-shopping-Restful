@@ -1,16 +1,9 @@
 package com.shop.onlineshopping.dao;
 
-import com.shop.onlineshopping.domain.Item;
 import com.shop.onlineshopping.domain.Order;
-import com.shop.onlineshopping.dto.PopularProduct;
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
 import java.sql.Date;
 import java.util.Comparator;
 import java.util.List;

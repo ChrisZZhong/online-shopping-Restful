@@ -1,6 +1,6 @@
-package com.shop.onlineshopping.dto.response;
+package com.shop.onlineshopping.dto.response.ProductRespons;
 
-import com.shop.onlineshopping.dto.PopularProduct;
+import com.shop.onlineshopping.dto.response.ProductRespons.domain.PopularProduct;
 import lombok.*;
 
 import java.util.List;

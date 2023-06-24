@@ -1,4 +1,4 @@
-package com.shop.onlineshopping.dto.response;
+package com.shop.onlineshopping.dto.response.ProductRespons;
 
 import com.shop.onlineshopping.domain.Product;
 import lombok.*;

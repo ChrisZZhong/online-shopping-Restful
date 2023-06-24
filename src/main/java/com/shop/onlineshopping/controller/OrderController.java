@@ -3,7 +3,6 @@ package com.shop.onlineshopping.controller;
 import com.shop.onlineshopping.domain.Item;
 import com.shop.onlineshopping.domain.Order;
 import com.shop.onlineshopping.domain.User;
-import com.shop.onlineshopping.dto.PopularProduct;
 import com.shop.onlineshopping.dto.request.OrderRequest;
 import com.shop.onlineshopping.dto.response.*;
 import com.shop.onlineshopping.security.AuthUserDetail;

@@ -2,7 +2,7 @@ package com.shop.onlineshopping.controller;
 
 import com.shop.onlineshopping.domain.Product;
 import com.shop.onlineshopping.domain.User;
-import com.shop.onlineshopping.dto.response.ProductsResponse;
+import com.shop.onlineshopping.dto.response.ProductRespons.ProductsResponse;
 import com.shop.onlineshopping.dto.response.StatusResponse;
 import com.shop.onlineshopping.security.AuthUserDetail;
 import com.shop.onlineshopping.service.UserService;
@@ -13,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class WatchlistController {

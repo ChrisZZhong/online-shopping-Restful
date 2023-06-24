@@ -1,4 +1,4 @@
-package com.shop.onlineshopping.dto;
+package com.shop.onlineshopping.dto.response.ProductRespons.domain;
 
 import lombok.*;
 import org.springframework.stereotype.Component;

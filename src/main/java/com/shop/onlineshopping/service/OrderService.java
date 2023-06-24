@@ -5,7 +5,6 @@ import com.shop.onlineshopping.dao.OrderDao;
 import com.shop.onlineshopping.domain.Item;
 import com.shop.onlineshopping.domain.Order;
 import com.shop.onlineshopping.domain.Product;
-import com.shop.onlineshopping.dto.PopularProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

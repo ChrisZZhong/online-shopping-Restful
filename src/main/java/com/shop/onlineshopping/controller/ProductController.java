@@ -1,12 +1,16 @@
 package com.shop.onlineshopping.controller;
 
 import com.shop.onlineshopping.domain.Product;
-import com.shop.onlineshopping.dto.PopularProduct;
-import com.shop.onlineshopping.dto.ProfitProduct;
+import com.shop.onlineshopping.domain.User;
+import com.shop.onlineshopping.dto.response.ProductRespons.*;
+import com.shop.onlineshopping.dto.response.ProductRespons.domain.FrequentProduct;
+import com.shop.onlineshopping.dto.response.ProductRespons.domain.PopularProduct;
+import com.shop.onlineshopping.dto.response.ProductRespons.domain.ProfitProduct;
 import com.shop.onlineshopping.dto.request.ProductRequest;
 import com.shop.onlineshopping.dto.response.*;
 import com.shop.onlineshopping.security.AuthUserDetail;
 import com.shop.onlineshopping.service.ProductService;
+import com.shop.onlineshopping.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,9 +25,12 @@ public class ProductController {
 
     private final ProductService productService;
 
+    private final UserService userService;
+
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, UserService userService) {
         this.productService = productService;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/products")
@@ -91,7 +98,7 @@ public class ProductController {
         List<PopularProduct> popularProducts = productService.getTopPopularProducts(Id);
         return ResponseEntity.ok(PopularProductsResponse.builder()
                 .status("success")
-                .message("Top " + Id + " popular products retrieved successfully")
+                .message("Top " + (Id == 0 ? "all" : Id) + " popular products retrieved successfully")
                 .popularProducts(popularProducts)
                 .build());
     }
@@ -102,10 +109,23 @@ public class ProductController {
         List<ProfitProduct> popularProducts = productService.getTopProfitProducts(Id);
         return ResponseEntity.ok(ProfitProductResponse.builder()
                 .status("success")
-                .message("Top " + Id + " profitable products retrieved successfully")
+                .message("Top " + (Id == 0 ? "all" : Id) + " profitable products retrieved successfully")
                 .profitProducts(popularProducts)
                 .build());
     }
+
+    @GetMapping("/products/frequent/{Id}")
+    @PreAuthorize("hasAuthority('user')")
+    public ResponseEntity<FrequentProductsResponse> getTopFrequentProducts(@PathVariable Integer Id, @AuthenticationPrincipal AuthUserDetail authUserDetail) {
+        User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
+        List<FrequentProduct> popularProducts = productService.getTopFrequentProductsByUserId(Id, user.getUserId());
+        return ResponseEntity.ok(FrequentProductsResponse.builder()
+                .status("success")
+                .message("Top " + (Id == 0 ? "all" : Id) + " frequent products retrieved successfully")
+                .frequentProducts(popularProducts)
+                .build());
+    }
+
 
 
 
