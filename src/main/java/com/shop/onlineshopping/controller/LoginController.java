@@ -15,6 +15,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class LoginController {
 
 
@@ -83,14 +85,15 @@ public class LoginController {
     }
 
     @PostMapping("/signup")
-    public LoginResponse signUp(@RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<LoginResponse> signUp(@RequestBody SignUpRequest signUpRequest) {
         // check username and email if already exists
         if (userService.getUserByUsername(signUpRequest.getUsername()).isPresent() ||
                 userService.getUserByEmail(signUpRequest.getEmail()).isPresent()) {
-            return LoginResponse.builder()
-                    .status("409 Conflict")
-                    .message("Username or email already exists, please try again.")
-                    .build();
+            return ResponseEntity.ok(
+                    LoginResponse.builder()
+                            .status("409 Conflict")
+                            .message("Username or email already exists, please try again.")
+                            .build());
         }
         // signup
         userService.signUp(signUpRequest);
@@ -111,11 +114,13 @@ public class LoginController {
         String token = jwtProvider.createToken(authUserDetail);
 
         //Returns the token as a response to the frontend/postman
-        return LoginResponse.builder()
-                .status("200 OK")
-                .message("Welcome " + authUserDetail.getUsername())
-                .token(token)
-                .build();
+        return ResponseEntity.ok(
+                LoginResponse.builder()
+                        .status("200 OK")
+                        .message("Welcome " + authUserDetail.getUsername())
+                        .token(token)
+                        .build()
+        );
     }
 
 }

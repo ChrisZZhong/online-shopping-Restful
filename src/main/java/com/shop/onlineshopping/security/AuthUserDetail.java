@@ -55,11 +55,5 @@ public class AuthUserDetail implements UserDetails {
 
     public boolean hasAuthority(String authority) {
         return getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(authority));
-//        for (GrantedAuthority grantedAuthority : authorities) {
-//            if (grantedAuthority.getAuthority().equals(authority)) {
-//                return true;
-//            }
-//        }
-//        return false;
     }
 }

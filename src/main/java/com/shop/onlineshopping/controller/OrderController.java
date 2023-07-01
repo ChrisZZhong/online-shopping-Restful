@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class OrderController {
 
     private OrderService orderService;
@@ -34,6 +35,7 @@ public class OrderController {
 
     @PostMapping("/orders")
     @PreAuthorize("hasAuthority('user')")
+    // place new order
     public StatusResponse placeOrder(@RequestBody OrderRequest orderRequest, @AuthenticationPrincipal AuthUserDetail authUserDetail) {
         User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
         List<Item> orderItems = orderRequest.getItems();
@@ -52,7 +54,7 @@ public class OrderController {
 
     @GetMapping("/orders/all")
     @PreAuthorize("hasAnyAuthority('user', 'admin')")
-    public OrdersResponse getAllOrders(@AuthenticationPrincipal AuthUserDetail authUserDetail) {
+    public ResponseEntity<OrdersResponse> getAllOrders(@AuthenticationPrincipal AuthUserDetail authUserDetail) {
         List<Order> order;
         if (authUserDetail.hasAuthority("user")) {
             User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
@@ -63,11 +65,13 @@ public class OrderController {
         for (Order o : order) {
             o.setItems(null);
         }
-        return OrdersResponse.builder()
+        return ResponseEntity.ok(
+                OrdersResponse.builder()
                 .status("success")
                 .message("Orders retrieved successfully")
                 .order(order)
-                .build();
+                .build()
+        );
 
     }
 
@@ -85,9 +89,14 @@ public class OrderController {
                         .build());
             }
             for (Item i : order.getItems()) {
-                i.setProduct(null);
+                i.setOrderId(null);
+                i.setProductId(null);
+                i.setWholesalePrice(null);
+                i.getProduct().setQuantity(null);
+                i.getProduct().setWholesalePrice(null);
             }
         }
+        order.setUserId(null);
         return ResponseEntity.ok(OrderResponse.builder()
                 .status("success")
                 .message("Orders retrieved successfully")
@@ -124,18 +133,18 @@ public class OrderController {
     }
 
     @PatchMapping("/orders/{Id}/complete")
-    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<StatusResponse> completeOrder(@AuthenticationPrincipal AuthUserDetail authUserDetail, @PathVariable Integer Id) {
-        if (authUserDetail.hasAuthority("user")) {
-            User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
-            // check order belongs to user?
-            if (orderService.getOrdersByUserId(user.getUserId()).stream().noneMatch(order -> order.getOrderId().equals(Id))) {
-                return ResponseEntity.ok(StatusResponse.builder()
-                        .status("failed")
-                        .message("can't access other user's order")
-                        .build());
-            }
-        }
+//        if (authUserDetail.hasAuthority("user")) {
+//            User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
+//            // check order belongs to user?
+//            if (orderService.getOrdersByUserId(user.getUserId()).stream().noneMatch(order -> order.getOrderId().equals(Id))) {
+//                return ResponseEntity.ok(StatusResponse.builder()
+//                        .status("failed")
+//                        .message("can't access other user's order")
+//                        .build());
+//            }
+//        }
         Order order = orderService.getOrderByOrderId(Id);
         if (orderService.completeOrder(order)) {
             return ResponseEntity.ok(StatusResponse.builder()

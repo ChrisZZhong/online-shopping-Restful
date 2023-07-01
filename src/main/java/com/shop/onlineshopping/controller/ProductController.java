@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     private final ProductService productService;
@@ -58,44 +59,46 @@ public class ProductController {
     @PreAuthorize("hasAnyAuthority('admin', 'user')")
     // User : The user is able to view all the products. An out-of-stock product should NOT be shown to the user.
     // Admin : Listing information, the current products that are listed to sell.
-    public ProductsResponse getAllProducts(@AuthenticationPrincipal AuthUserDetail authUserDetail) {
+    public ResponseEntity<ProductsResponse> getAllProducts(@AuthenticationPrincipal AuthUserDetail authUserDetail) {
         List<Product> products = new ArrayList<>();
         if (authUserDetail.hasAuthority("user")) {
             products = productService.getOnsaleProducts();
             products.removeIf(product -> product.getQuantity() == 0);
             for (Product product : products) {
                 product.setWholesalePrice(null);
+                product.setQuantity(null);
             }
         } else if (authUserDetail.hasAuthority("admin")){
             products = productService.getAllProducts();
         }
-        return ProductsResponse.builder()
+        return ResponseEntity.ok().body(ProductsResponse.builder()
                 .status("200 OK")
                 .message("All products")
                 .products(products)
-                .build();
+                .build());
     }
 
     @GetMapping(value = "/products/{id}")
     @PreAuthorize("hasAnyAuthority('admin', 'user')")
-    public ProductResponse updateProduct(@PathVariable Integer id, @AuthenticationPrincipal AuthUserDetail authUserDetail) {
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Integer id, @AuthenticationPrincipal AuthUserDetail authUserDetail) {
         Product product = productService.getProductById(id);
         if (authUserDetail.hasAuthority("user")) {
             if (product.getQuantity() == 0) {
-                return ProductResponse.builder()
+                return ResponseEntity.badRequest().body(ProductResponse.builder()
                         .status("failed")
                         .message("product out of stock")
                         .product(null)
-                        .build();
+                        .build());
             }
             product.setQuantity(null);
             product.setWholesalePrice(null);
         }
-        return ProductResponse.builder()
+        return ResponseEntity.ok().body(
+                ProductResponse.builder()
                 .status("200 OK")
                 .message("Product with id " + id)
                 .product(product)
-                .build();
+                .build());
     }
 
     // below is derived attributes for summary table

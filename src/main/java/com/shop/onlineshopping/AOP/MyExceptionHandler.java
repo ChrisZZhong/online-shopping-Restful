@@ -12,7 +12,7 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<ErrorResponse> handleException(Exception e){
-        return new ResponseEntity<>(ErrorResponse.builder().message("Different Message").build(), HttpStatus.OK);
+        return new ResponseEntity<>(ErrorResponse.builder().status("bad request").message(e.getMessage()).build(), HttpStatus.OK);
     }
 
     @ExceptionHandler(value = {BadCredentialsException.class})
