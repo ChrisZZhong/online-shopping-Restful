@@ -8,6 +8,7 @@ import com.shop.onlineshopping.security.AuthUserDetail;
 import com.shop.onlineshopping.service.UserService;
 import com.shop.onlineshopping.service.WatchlistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -29,51 +30,59 @@ public class WatchlistController {
     }
 
     @GetMapping("/watchlist/products/all")
-    public ProductsResponse getWatchlistProducts(@AuthenticationPrincipal AuthUserDetail authUserDetail) {
+    public ResponseEntity<ProductsResponse> getWatchlistProducts(@AuthenticationPrincipal AuthUserDetail authUserDetail) {
         User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
         List<Product> products = watchlistService.getWatchlistProducts(user.getUserId());
         products.removeIf(product -> product.getQuantity() == 0);
         for (Product product : products) {
             product.setWholesalePrice(null);
         }
-        return ProductsResponse.builder()
-                .status("200 OK")
+        return ResponseEntity.ok(ProductsResponse.builder()
+                .status("success")
                 .message("Get watchlist products successfully")
                 .products(products)
-                .build();
+                .build());
     }
 
     @PostMapping("/watchlist/product/{Id}")
     @PreAuthorize("hasAuthority('user')")
-    public StatusResponse addProductToWatchlist(@AuthenticationPrincipal AuthUserDetail authUserDetail, @PathVariable Integer Id) {
+    public ResponseEntity<StatusResponse> addProductToWatchlist(@AuthenticationPrincipal AuthUserDetail authUserDetail, @PathVariable Integer Id) {
         User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
         if (watchlistService.addProductToWatchlist(user.getUserId(), Id)) {
-            return StatusResponse.builder()
-                    .status("200 OK")
+            return ResponseEntity.ok(
+                    StatusResponse.builder()
+                    .status("success")
                     .message("Add product to watchlist successfully")
-                    .build();
+                    .build()
+            );
         } else {
-            return StatusResponse.builder()
-                    .status("400 BAD REQUEST")
+            return ResponseEntity.ok(
+                    StatusResponse.builder()
+                    .status("failed")
                     .message("Product already in watchlist")
-                    .build();
+                    .build()
+            );
         }
     }
 
     @DeleteMapping("/watchlist/product/{Id}")
     @PreAuthorize("hasAuthority('user')")
-    public StatusResponse deleteProductFromWatchlist(@AuthenticationPrincipal AuthUserDetail authUserDetail, @PathVariable Integer Id) {
+    public ResponseEntity<StatusResponse> deleteProductFromWatchlist(@AuthenticationPrincipal AuthUserDetail authUserDetail, @PathVariable Integer Id) {
         User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
         if (watchlistService.deleteProductFromWatchlist(user.getUserId(), Id)) {
-            return StatusResponse.builder()
-                    .status("200 OK")
+            return ResponseEntity.ok(
+                    StatusResponse.builder()
+                    .status("success")
                     .message("Delete product from watchlist successfully")
-                    .build();
+                    .build()
+            );
         } else {
-            return StatusResponse.builder()
-                    .status("400 BAD REQUEST")
+            return ResponseEntity.ok(
+                    StatusResponse.builder()
+                    .status("failed")
                     .message("Product not in watchlist")
-                    .build();
+                    .build()
+            );
         }
     }
 

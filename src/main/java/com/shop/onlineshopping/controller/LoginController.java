@@ -77,7 +77,7 @@ public class LoginController {
         //Returns the token as a response to the frontend/postman
         return ResponseEntity.ok(
                 LoginResponse.builder()
-                        .status("login successfully")
+                        .status("success")
                         .message("Welcome " + authUserDetail.getUsername())
                         .token(token)
                         .build()
@@ -91,7 +91,7 @@ public class LoginController {
                 userService.getUserByEmail(signUpRequest.getEmail()).isPresent()) {
             return ResponseEntity.ok(
                     LoginResponse.builder()
-                            .status("409 Conflict")
+                            .status("Conflict")
                             .message("Username or email already exists, please try again.")
                             .build());
         }
@@ -116,7 +116,7 @@ public class LoginController {
         //Returns the token as a response to the frontend/postman
         return ResponseEntity.ok(
                 LoginResponse.builder()
-                        .status("200 OK")
+                        .status("success")
                         .message("Welcome " + authUserDetail.getUsername())
                         .token(token)
                         .build()

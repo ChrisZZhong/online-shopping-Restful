@@ -36,19 +36,22 @@ public class OrderController {
     @PostMapping("/orders")
     @PreAuthorize("hasAuthority('user')")
     // place new order
-    public StatusResponse placeOrder(@RequestBody OrderRequest orderRequest, @AuthenticationPrincipal AuthUserDetail authUserDetail) {
+    public ResponseEntity<StatusResponse> placeOrder(@RequestBody OrderRequest orderRequest, @AuthenticationPrincipal AuthUserDetail authUserDetail) {
         User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
         List<Item> orderItems = orderRequest.getItems();
         if (orderService.placeOrder(orderItems, user.getUserId())) {
-            return StatusResponse.builder()
+            return ResponseEntity.ok(StatusResponse.builder()
                     .status("success")
                     .message("Order placed successfully")
-                    .build();
+                    .build()
+            );
         } else {
-            return StatusResponse.builder()
+            return ResponseEntity.ok(
+                    StatusResponse.builder()
                     .status("failed")
                     .message("Order failed")
-                    .build();
+                    .build()
+            );
         }
     }
 
@@ -133,7 +136,7 @@ public class OrderController {
     }
 
     @PatchMapping("/orders/{Id}/complete")
-    @PreAuthorize("hasAnyAuthority('admin')")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<StatusResponse> completeOrder(@AuthenticationPrincipal AuthUserDetail authUserDetail, @PathVariable Integer Id) {
 //        if (authUserDetail.hasAuthority("user")) {
 //            User user = userService.getUserByUsername(authUserDetail.getUsername()).get();

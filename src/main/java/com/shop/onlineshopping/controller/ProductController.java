@@ -37,22 +37,24 @@ public class ProductController {
 
     @PostMapping(value = "/products")
     @PreAuthorize("hasAuthority('admin')")
-    public StatusResponse addProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<StatusResponse> addProduct(@RequestBody ProductRequest productRequest) {
         productService.addProduct(productRequest);
-        return StatusResponse.builder()
-                .status("200 OK")
+        return ResponseEntity.ok().body(
+                StatusResponse.builder()
+                .status("success")
                 .message("Product added successfully")
-                .build();
+                .build());
     }
 
     @PatchMapping(value = "/products/{id}")
     @PreAuthorize("hasAuthority('admin')")
-    public StatusResponse updateProduct(@RequestBody ProductRequest productRequest, @PathVariable Integer id) {
+    public ResponseEntity<StatusResponse> updateProduct(@RequestBody ProductRequest productRequest, @PathVariable Integer id) {
         productService.updateProductById(productRequest, id);
-        return StatusResponse.builder()
-                .status("200 OK")
+        return ResponseEntity.ok().body(
+                StatusResponse.builder()
+                .status("success")
                 .message("Product updated successfully")
-                .build();
+                .build());
     }
 
     @GetMapping(value = "/products/all")
@@ -72,7 +74,7 @@ public class ProductController {
             products = productService.getAllProducts();
         }
         return ResponseEntity.ok().body(ProductsResponse.builder()
-                .status("200 OK")
+                .status("success")
                 .message("All products")
                 .products(products)
                 .build());
@@ -95,7 +97,7 @@ public class ProductController {
         }
         return ResponseEntity.ok().body(
                 ProductResponse.builder()
-                .status("200 OK")
+                .status("success")
                 .message("Product with id " + id)
                 .product(product)
                 .build());
