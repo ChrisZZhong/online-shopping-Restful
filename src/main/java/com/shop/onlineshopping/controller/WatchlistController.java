@@ -29,13 +29,15 @@ public class WatchlistController {
         this.userService = userService;
     }
 
-    @GetMapping("/watchlist/products/all")
+    @GetMapping("/watchlist/product/all")
+    @PreAuthorize("hasAuthority('user')")
     public ResponseEntity<ProductsResponse> getWatchlistProducts(@AuthenticationPrincipal AuthUserDetail authUserDetail) {
         User user = userService.getUserByUsername(authUserDetail.getUsername()).get();
         List<Product> products = watchlistService.getWatchlistProducts(user.getUserId());
         products.removeIf(product -> product.getQuantity() == 0);
         for (Product product : products) {
             product.setWholesalePrice(null);
+            product.setQuantity(null);
         }
         return ResponseEntity.ok(ProductsResponse.builder()
                 .status("success")
