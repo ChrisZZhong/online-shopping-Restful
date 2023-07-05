@@ -64,4 +64,5 @@ public class UserDao extends AbstractHibernateDao<User> {
     public void updateUser(User user) {
         getCurrentSession().saveOrUpdate(user);
     }
+
 }

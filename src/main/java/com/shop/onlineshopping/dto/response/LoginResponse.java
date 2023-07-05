@@ -11,5 +11,5 @@ public class LoginResponse {
     private String status;
     private String message;
     private String token;
-
+    private Boolean isAdmin;
 }

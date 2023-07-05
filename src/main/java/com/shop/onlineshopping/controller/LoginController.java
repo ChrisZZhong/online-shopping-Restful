@@ -80,6 +80,7 @@ public class LoginController {
                         .status("success")
                         .message("Welcome " + authUserDetail.getUsername())
                         .token(token)
+                        .isAdmin(authUserDetail.hasAuthority("admin"))
                         .build()
         );
     }
@@ -119,6 +120,7 @@ public class LoginController {
                         .status("success")
                         .message("Welcome " + authUserDetail.getUsername())
                         .token(token)
+                        .isAdmin(authUserDetail.hasAuthority("admin"))
                         .build()
         );
     }

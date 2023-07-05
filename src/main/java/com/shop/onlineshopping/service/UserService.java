@@ -66,4 +66,9 @@ public class UserService {
     public void updateUser(User user) {
         userDao.updateUser(user);
     }
+
+    public boolean isAdmin(Integer userId) {
+        return getAllUsers().stream().filter((user) -> user.getUserId().equals(userId))
+                .anyMatch((user) -> user.getRole().equals(1));
+    }
 }
