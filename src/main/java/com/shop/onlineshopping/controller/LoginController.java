@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -57,7 +58,7 @@ public class LoginController {
 
     //User trying to log in with username and password
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws BadCredentialsException{
+    public ResponseEntity<LoginResponse> login(@Valid  @RequestBody LoginRequest request) throws BadCredentialsException{
         Authentication authentication;
 
         //Try to authenticate the user using the username and password
@@ -86,7 +87,7 @@ public class LoginController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<LoginResponse> signUp(@RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<LoginResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         // check username and email if already exists
         if (userService.getUserByUsername(signUpRequest.getUsername()).isPresent() ||
                 userService.getUserByEmail(signUpRequest.getEmail()).isPresent()) {

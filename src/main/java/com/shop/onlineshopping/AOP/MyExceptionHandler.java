@@ -16,7 +16,7 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(value = {BadCredentialsException.class})
-    public ResponseEntity<ErrorResponse> handleDemoNotFoundException(BadCredentialsException e){
+    public ResponseEntity<ErrorResponse> handleBadLoginRequestException(BadCredentialsException e){
         return new ResponseEntity<>(ErrorResponse.builder().message(e.getMessage()).build(), HttpStatus.OK);
     }
 
